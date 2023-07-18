@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>-- Memory Game --</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Coda"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <!-- NOTE: Currently we only use 1 icon, wanted to use more but eventually left it this way instead of saving as svg or something -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
+    />
+  </head>
+  <body class="shake-element">
+    <div id="score-panel">
+      <div class="stat-container">
+        <h2 class="moves label">MOVES</h2>
+        <h2 id="moves" class="moves data">0</h2>
+      </div>
+      <div class="stat-container">
+        <h2 class="timer label">TIMER</h2>
+        <h2 id="timer" class="timer data">00:00</h2>
+      </div>
+      <div class="stat-container">
+        <h2 class="game-state label">GAME</h2>
+        <h2 id="game-state" class="game-state data">STOP</h2>
+      </div>
+    </div>
+    <div class="buttons shake-element">
+      <div class="board-size-buttons">
+        <button id="board4" class="button selected">4</button>
+        <button id="board5" class="button">5</button>
+        <button id="board6" class="button">6</button>
+        <button id="start-button" class="button">START</button>
+      </div>
+      <div class="board-size-buttons">
+        <button class="restart button">
+          <i class="fa fa-repeat"></i>
+        </button>
+      </div>
+
+      <!-- <div id="activated-effect" class="activated-effect"></div> -->
+    </div>
+    <ul class="deck"></ul>
+
+    <script type="text/javascript" src="./utils/index.js"></script>
+    <script type="text/javascript" src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,375 @@
+:root {
+  /* COLOR PALETTE */
+  --french-violet: #7400b8ff;
+  --grape: #6930c3ff;
+  --slate-blue: #5e60ceff;
+  --united-nations-blue: #5390d9ff;
+  --picton-blue: #4ea8deff;
+  --aero: #48bfe3ff;
+  --sky-blue: #56cfe1ff;
+  --tiffany-blue: #64dfdfff;
+  --turquoise: #72efddff;
+  --aquamarine: #80ffdbff;
+  /* BASE COLORS */
+  --primary-color: var(--sky-blue);
+  --secondary-color: var(--slate-blue);
+  --shade-color: var(--grape);
+  /* CARD COLORS */
+  --card-color: var(--primary-color);
+  --matched-card-color: var(--turquoise);
+  --not-matched-card-color: var(--shade-color);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: var(--primary-color);
+  overflow: hidden;
+  font-family: "Coda", cursive;
+  height: 100vh;
+  margin: 0;
+}
+
+.deck {
+  width: 100%;
+  max-width: 500px;
+  max-height: 500px;
+  height: calc(50vh - 256px);
+  min-width: 320px;
+  min-height: 320px;
+  margin: 0 auto;
+  background: var(--primary-color);
+  padding: 32px 24px;
+  border-color: var(--primary-color);
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 16px 16px 0 0 var(--shade-color);
+  display: grid;
+  grid-template-columns: repeat(var(--game-board-size), 1fr);
+  grid-template-rows: repeat(var(--game-board-size), 1fr);
+  grid-gap: 2px;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.deck .card {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  display: inline-block;
+  margin: 0 16px 16px 0;
+  font-size: 0;
+  text-align: center;
+  border-radius: 8px;
+  vertical-align: top;
+  cursor: pointer;
+  transform: rotateY(0) scaleX(1);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.deck .card:not(.open):not(.match):not(.show) {
+  border: 2px solid var(--primary-color);
+  cursor: pointer;
+}
+
+.deck .card span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc(100% / (var(--game-board-size) - 32px));
+  display: block;
+  margin-bottom: 5px;
+  transition: font-size 0.3s ease;
+}
+
+.deck .card.open {
+  transition: transform 0.3s ease;
+  background: var(--primary-color);
+  border: 2px solid var(--secondary-color);
+  cursor: default;
+}
+
+.deck .card.show {
+  font-size: 33px;
+  color: var(--secondary-color);
+}
+
+.deck .card.match {
+  animation: none;
+  cursor: default;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+}
+
+.deck .card.notmatch {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  cursor: default;
+  animation: shake 0.3s ease-in-out;
+}
+
+.board-size-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 10px;
+  align-items: center;
+  border: 2px solid var(--secondary-color);
+  border-bottom: none;
+  border-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 16px 16px 0 0 var(--shade-color);
+  padding: 16px 24px;
+  margin-top: 32px;
+}
+
+.button {
+  cursor: pointer;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 8px;
+  border: 2px solid var(--secondary-color);
+  box-shadow: 4px 4px 0 0 var(--shade-color);
+  padding: 20px 25px;
+  font-size: 20px;
+  transition: all 0.2s;
+  top: 0;
+  margin: 0 4px;
+}
+
+.button:active {
+  top: 4px;
+  box-shadow: 0 2px 0px var(--shade-color);
+  transition: all 0.2s;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  border: 2px solid var(--secondary-color);
+  box-shadow: 1px 1px 0 0 var(--shade-color);
+  transition: all 0.2s;
+  top: 0;
+  margin: 0 8px;
+}
+
+.button .selected {
+  top: 4px;
+  box-shadow: 0 2px 0px var(--shade-color);
+  transition: all 0.2s;
+}
+
+.button:hover {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+#score-panel {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 16px;
+}
+
+.stat-container {
+  height: 50px;
+}
+
+/* Dont show score-panel if we would collide with the deck */
+@media (max-width: 1000px) {
+  #score-panel {
+    display: none;
+  }
+}
+
+#score-panel .restart {
+  float: right;
+  cursor: pointer;
+}
+
+*::-moz-selection {
+  background: transparent;
+}
+
+*::selection {
+  background: transparent;
+}
+
+.data {
+  width: 90px;
+  font-weight: bold;
+  margin-left: 0px;
+  display: inline-block;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  border-radius: 8px;
+  padding: 5px 10px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.label {
+  width: 90px;
+  font-weight: bold;
+  margin-left: 5px;
+  display: inline-block;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 5px 10px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+h2.data {
+  color: var(--primary-color);
+  background: var(--secondary-color);
+}
+
+h2.label {
+  color: var(--secondary-color);
+  background: var(--primary-color);
+}
+
+.emoji-particle {
+  position: absolute;
+  display: inline-block;
+  pointer-events: none;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 16px;
+  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+
+  /* Animation */
+  animation: emoji 0.7s ease-in-out;
+  animation-fill-mode: forwards;
+
+  animation-delay: calc(var(--i) * 0.1s);
+
+  animation-duration: calc(0.5s + var(--i) * 0.1s);
+
+  animation-direction: reverse;
+}
+
+/* dont show under specific screen size */
+@media (max-width: 512px) {
+  .activated-effect {
+    display: none;
+  }
+}
+
+.activated-effect {
+  text-align: center;
+  animation: emoji 0.7s ease-in-out;
+  animation-fill-mode: forwards;
+  animation-delay: calc(var(--i) * 0.1s);
+  animation-duration: calc(0.5s + var(--i) * 0.1s);
+  animation-direction: reverse;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  box-shadow: 0 0 0 2px var(--secondary-color), 0 0 0 1px var(--primary-color);
+  border-radius: 5px;
+  min-width: 150px;
+  min-height: calc(100% - 64px);
+}
+
+/* -- HAPPENING ANIMATIONS -- */
+/* FLASH */
+.flash-animation {
+  animation: flash 100ms;
+}
+
+.flash-animation {
+  animation: flash 300ms;
+}
+
+@keyframes flash {
+  0% {
+    filter: invert(0);
+    opacity: 1;
+  }
+  50% {
+    filter: invert(100%);
+    opacity: 0.7;
+  }
+  100% {
+    filter: invert(0);
+    opacity: 1;
+  }
+}
+
+body {
+  transition: background-color 300ms;
+}
+
+body.flash-animation {
+  background-color: #000;
+}
+
+/* SHAKE */
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  10% {
+    transform: translate(-5px, 5px);
+  }
+  20% {
+    transform: translate(5px, -5px);
+  }
+  30% {
+    transform: translate(-5px, -5px);
+  }
+  40% {
+    transform: translate(5px, 5px);
+  }
+  50% {
+    transform: translate(-5px, 0);
+  }
+  60% {
+    transform: translate(5px, 0);
+  }
+  70% {
+    transform: translate(-5px, 0);
+  }
+  80% {
+    transform: translate(5px, 0);
+  }
+  90% {
+    transform: translate(-5px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.1s ease-in-out;
+  animation-iteration-count: 3;
+}
